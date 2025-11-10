@@ -38,7 +38,7 @@ export const getSingleContactAgenda = async (userName) => {
 
 export const createNewAgenda = async (userName) => {
   const response = await fetch(
-    `https://playground.4geeks.com/todo/users/${userName}`,
+    `https://playground.4geeks.com/contact/agendas/${userName}`,
     {
       method: "POST",
       headers: {
@@ -56,9 +56,9 @@ export const createNewAgenda = async (userName) => {
   }
 };
 
-export const deleteAgenda = async (userName) => {
+export const deleteUserAgenda = async (userName) => {
   const response = await fetch(
-    `https://playground.4geeks.com/todo/users/${userName}`,
+    `https://playground.4geeks.com/contact/agendas/${userName}?tags=Agenda%20operations&summary=Delete%20Agenda.&description=Deletes%20a%20specific%20agenda%20from%20the%20database.`,
     {
       method: "DELETE",
       headers: {

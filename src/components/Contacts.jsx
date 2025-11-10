@@ -1,11 +1,20 @@
 import { getAllAgendas } from "../services/agendaServices";
 import { useEffect, useState } from "react";
-import { getSingleContactAgenda } from "../services/agendaServices";
+import {
+  getSingleContactAgenda,
+  deleteUserAgenda,
+  createNewAgenda,
+} from "../services/agendaServices";
 import { useApp } from "../contexts/AppCtx";
+import {
+  deleteContactForUser,
+  refreshUserContacts,
+} from "../services/contactServices";
 
 export const Contacts = () => {
   const [allAgendas, setAllAgendas] = useState([]);
   const [currentUserAgenda, setCurrentUserAgenda] = useState([]);
+  const [userInputValue, setUserInputValue] = useState("");
   const { selectedUser, setSelectedUser } = useApp();
 
   useEffect(() => {
@@ -20,9 +29,31 @@ export const Contacts = () => {
   const handleChange = async (event) => {
     const agendaData = await getSingleContactAgenda(event.target.value);
     setCurrentUserAgenda(agendaData);
+    console.log(agendaData)
     setSelectedUser(event.target.value);
   };
+
+  const deleteUser = async (userName) => {
+    await deleteUserAgenda(userName);
+    console.log(userName);
+    refreshAllAgendas();
+  };
+
+  const addUser = async (userName) => {
+    await createNewAgenda(userName);
+    setUserInputValue("");
+    refreshAllAgendas();
+  };
+
+  const deleteUserContact = async (userName, contactID) => {
+    await deleteContactForUser(userName, contactID);
+    const agenda= await getSingleContactAgenda(userName)
+    console.log(agenda)
+    setCurrentUserAgenda(agenda)
+  };
+
   console.log(selectedUser);
+
   return (
     <>
       <div className="d-flex ms-3 my-3">
@@ -40,9 +71,27 @@ export const Contacts = () => {
             </option>
           ))}
         </select>
-        <button className="mx-1 border rounded-3">Delete</button>
-        <input className="border rounded-3"></input>
-        <button className="mx-1 border rounded-3">Añadir usuario</button>
+        <button
+          onClick={() => {
+            deleteUser(selectedUser);
+          }}
+          className="mx-1 border rounded-3"
+        >
+          Delete
+        </button>
+        <input
+          onChange={({ target }) => setUserInputValue(target.value)}
+          value={userInputValue}
+          className="border rounded-3"
+        ></input>
+        <button
+          onClick={() => {
+            addUser(userInputValue);
+          }}
+          className="mx-1 border rounded-3"
+        >
+          Añadir usuario
+        </button>
       </div>
       <div>
         {currentUserAgenda.map((currentUserAgenda) => (
@@ -63,7 +112,12 @@ export const Contacts = () => {
             </div>
             <div className="justify-content-end">
               <button className="my-2 me-4 fa-solid fa-pen-to-square"></button>
-              <button className="my-2 mx-2 fa-solid fa-trash"></button>
+              <button
+                onClick={() => {
+                  deleteUserContact(selectedUser, currentUserAgenda.id);
+                }}
+                className="my-2 mx-2 fa-solid fa-trash"
+              ></button>
             </div>
           </div>
         ))}
