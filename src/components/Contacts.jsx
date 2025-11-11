@@ -10,12 +10,14 @@ import {
   deleteContactForUser,
   refreshUserContacts,
 } from "../services/contactServices";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Contacts = () => {
   const [allAgendas, setAllAgendas] = useState([]);
   const [currentUserAgenda, setCurrentUserAgenda] = useState([]);
   const [userInputValue, setUserInputValue] = useState("");
   const { selectedUser, setSelectedUser } = useApp();
+  const {selectedContactId, setSelectedContactId} = useApp();
 
   useEffect(() => {
     refreshAllAgendas();
@@ -29,7 +31,7 @@ export const Contacts = () => {
   const handleChange = async (event) => {
     const agendaData = await getSingleContactAgenda(event.target.value);
     setCurrentUserAgenda(agendaData);
-    console.log(agendaData)
+    console.log(agendaData);
     setSelectedUser(event.target.value);
   };
 
@@ -47,12 +49,19 @@ export const Contacts = () => {
 
   const deleteUserContact = async (userName, contactID) => {
     await deleteContactForUser(userName, contactID);
-    const agenda= await getSingleContactAgenda(userName)
-    console.log(agenda)
-    setCurrentUserAgenda(agenda)
+    const agenda = await getSingleContactAgenda(userName);
+    console.log(agenda);
+    setCurrentUserAgenda(agenda);
+  };
+
+  const editUserContact = async (user, id) => {
+
+    setSelectedContactId(id);
+    console.log(user);
   };
 
   console.log(selectedUser);
+  console.log(currentUserAgenda)
 
   return (
     <>
@@ -111,7 +120,16 @@ export const Contacts = () => {
               </div>
             </div>
             <div className="justify-content-end">
-              <button className="my-2 me-4 fa-solid fa-pen-to-square"></button>
+              <button
+                onClick={() => {
+                  editUserContact(selectedUser, currentUserAgenda.id);
+                }}
+              >
+                <Link
+                  className="my-2 fa-solid fa-pen-to-square"
+                  to="/editcontact"
+                ></Link>
+              </button>
               <button
                 onClick={() => {
                   deleteUserContact(selectedUser, currentUserAgenda.id);

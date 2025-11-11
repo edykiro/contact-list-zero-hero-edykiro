@@ -1,3 +1,5 @@
+import { EditContact } from "../components/EditContact";
+
 export const createContactForUser = async (
   user,
   fullName,
@@ -42,9 +44,8 @@ export const refreshUserContacts = async (userName) => {
     {
       method: "GET",
       headers: {
-        accept: "application/json"
+        accept: "application/json",
       },
-      
     }
   );
   if (response.ok) {
@@ -56,11 +57,7 @@ export const refreshUserContacts = async (userName) => {
   }
 };
 
-
-
-
-
-export const deleteContactForUser = async (userName,contactID) => {
+export const deleteContactForUser = async (userName, contactID) => {
   const response = await fetch(
     `https://playground.4geeks.com/contact/agendas/${userName}/contacts/${contactID}`,
     {
@@ -69,14 +66,48 @@ export const deleteContactForUser = async (userName,contactID) => {
         accept: "application/json",
         "Content-Type": "application/json",
       },
-      
     }
   );
   if (response.ok) {
     const data = await response.text();
-    console.log(data)
+    console.log(data);
     return data;
+  } else {
+    const message = { error: response.statusText };
+    console.log(message);
+  }
+};
 
+export const editContactForUser = async (
+  userName,
+  contactID,
+  fullName,
+  fullPhone,
+  fullMail,
+  fullAddress
+) => {
+  console.log(userName, contactID, fullName, fullPhone, fullMail, fullAddress);
+  const response = await fetch(
+    `https://playground.4geeks.com/contact/agendas/${userName}/contacts/${contactID}`,
+    {
+      method: "PUT",
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: fullName,
+        phone: fullPhone,
+        email: fullMail,
+        address: fullAddress,
+      }),
+    }
+  );
+
+  if (response.ok) {
+    const data = await response.JSON();
+    console.log(data);
+    return data;
   } else {
     const message = { error: response.statusText };
     console.log(message);

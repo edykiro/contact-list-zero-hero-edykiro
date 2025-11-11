@@ -10,9 +10,10 @@ export const useApp = () => {
 
 export default function AppProvider({ children }) {
   const [selectedUser, setSelectedUser] = useState("");
+  const [selectedContactId, setSelectedContactId] = useState("");
 
   return (
-    <AppCtx.Provider value={{ selectedUser, setSelectedUser }}>
+    <AppCtx.Provider value={{ selectedUser, setSelectedUser, setSelectedContactId, selectedContactId }}>
       {children}
     </AppCtx.Provider>
   );
