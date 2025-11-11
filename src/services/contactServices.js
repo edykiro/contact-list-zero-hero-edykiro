@@ -1,4 +1,4 @@
-import { EditContact } from "../components/EditContact";
+
 
 export const createContactForUser = async (
   user,
@@ -105,7 +105,7 @@ export const editContactForUser = async (
   );
 
   if (response.ok) {
-    const data = await response.JSON();
+    const data = await response.text();
     console.log(data);
     return data;
   } else {

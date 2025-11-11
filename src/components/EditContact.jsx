@@ -1,12 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useApp } from "../contexts/AppCtx";
 import { useEffect, useState } from "react";
-import { createContactForUser,editContactForUser } from "../services/contactServices";
+import {
+  createContactForUser,
+  editContactForUser,
+} from "../services/contactServices";
 
 export const EditContact = () => {
   const navigate = useNavigate();
   const { selectedUser, setSelectedUser } = useApp();
-  const {selectedContactId, setSelectedContactId} = useApp();
+  const { selectedContactId, setSelectedContactId } = useApp();
 
   const [userFullName, setUserFullName] = useState("");
   const [userEmail, setUserEmail] = useState("");
@@ -17,24 +20,35 @@ export const EditContact = () => {
     selectedUser,
     selectedContactId,
     userFullName,
-    userEmail,
     userPhone,
+    userEmail,
     userAddress
   ) => {
     const fetchData = await editContactForUser(
       selectedUser,
       selectedContactId,
       userFullName,
-      userEmail,
       userPhone,
+      userEmail,
       userAddress
     );
     console.log(fetchData);
   };
-  console.log("Selected user to edit is "+selectedUser + " With the contact ID "+selectedContactId);
+  console.log(
+    "Selected user to edit is " +
+      selectedUser +
+      " With the contact ID " +
+      selectedContactId
+  );
 
-  console.log(selectedUser, selectedContactId, userFullName, userEmail, userPhone, userAddress)
-
+  console.log(
+    selectedUser,
+    selectedContactId,
+    userFullName,
+    userEmail,
+    userPhone,
+    userAddress
+  );
 
   return (
     <>
@@ -57,17 +71,6 @@ export const EditContact = () => {
             </div>
 
             <div className="mb-3">
-              <label className="form-label">Email</label>
-              <input
-                onChange={({ target }) => setUserEmail(target.value)}
-                value={userEmail}
-                type="email"
-                className="form-control"
-                placeholder="Enter email"
-              />
-            </div>
-
-            <div className="mb-3">
               <label className="form-label">Phone</label>
               <input
                 onChange={({ target }) => setUserPhone(target.value)}
@@ -75,6 +78,17 @@ export const EditContact = () => {
                 type="tel"
                 className="form-control"
                 placeholder="Enter phone"
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Email</label>
+              <input
+                onChange={({ target }) => setUserEmail(target.value)}
+                value={userEmail}
+                type="email"
+                className="form-control"
+                placeholder="Enter email"
               />
             </div>
 
@@ -93,13 +107,13 @@ export const EditContact = () => {
                 onClick={() =>
                   editContactFunction(
                     selectedUser,
+                    selectedContactId,
                     userFullName,
-                    userEmail,
                     userPhone,
+                    userEmail,
                     userAddress
                   )
                 }
-
                 className="btn btn-success"
               >
                 {" "}
@@ -107,11 +121,8 @@ export const EditContact = () => {
               </button>
 
               <button className="btn btn-success">
-                
                 {" "}
-                <Link to="/" >
-                  Or get back to contacts
-                </Link>
+                <Link to="/">Or get back to contacts</Link>
               </button>
             </div>
           </div>
