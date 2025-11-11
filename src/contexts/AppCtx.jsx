@@ -8,7 +8,7 @@ export const useApp = () => {
   return ctx;
 };
 
-export default function AppProvider({ children }) {
+export function AppProvider({ children }) {
   const [selectedUser, setSelectedUser] = useState("");
   const [selectedContactId, setSelectedContactId] = useState("");
 

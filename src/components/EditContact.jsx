@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useApp } from "../contexts/AppCtx";
 import { useEffect, useState } from "react";
 import {
@@ -15,6 +15,15 @@ export const EditContact = () => {
   const [userEmail, setUserEmail] = useState("");
   const [userPhone, setUserPhone] = useState("");
   const [userAddress, setUserAddress] = useState("");
+
+  const { state } = useLocation(); // undefined if user arrived some other way
+  console.log(state.contact.name);
+  useEffect(() => {
+    setUserFullName(state.contact.name);
+    setUserEmail(state.contact.email);
+    setUserPhone(state.contact.phone);
+    setUserAddress(state.contact.address);
+  }, []);
 
   const editContactFunction = async (
     selectedUser,
@@ -41,63 +50,62 @@ export const EditContact = () => {
       selectedContactId
   );
 
-  console.log(
-    selectedUser,
-    selectedContactId,
-    userFullName,
-    userEmail,
-    userPhone,
-    userAddress
-  );
-
   return (
     <>
-      <div className=" d-flex align-items-center justify-content-center bg-white mt-4">
+      <div className="d-flex align-items-center justify-content-center bg-light py-5 min-vh-100">
         <div
-          className="card shadow-sm"
+          className="card border-0 shadow rounded-4"
           style={{ maxWidth: "420px", width: "100%" }}
         >
           <div className="card-body p-4">
-            <h2 className="mb-4">Edit Contact</h2>
+            <h4 className="mb-4 text-primary fw-semibold">Edit Contact</h4>
 
             <div className="mb-3">
-              <label className="form-label">Full Name</label>
+              <label className="form-label text-secondary small fw-500">
+                Full Name
+              </label>
               <input
                 onChange={({ target }) => setUserFullName(target.value)}
                 value={userFullName}
-                className="form-control"
+                className="form-control bg-white border-secondary-subtle shadow-sm"
                 placeholder="Enter full name"
               />
             </div>
 
             <div className="mb-3">
-              <label className="form-label">Phone</label>
+              <label className="form-label text-secondary small fw-500">
+                Phone
+              </label>
               <input
                 onChange={({ target }) => setUserPhone(target.value)}
                 value={userPhone}
                 type="tel"
-                className="form-control"
+                className="form-control bg-white border-secondary-subtle shadow-sm"
                 placeholder="Enter phone"
               />
             </div>
 
             <div className="mb-3">
-              <label className="form-label">Email</label>
+              <label className="form-label text-secondary small fw-500">
+                Email
+              </label>
               <input
                 onChange={({ target }) => setUserEmail(target.value)}
                 value={userEmail}
                 type="email"
-                className="form-control"
+                className="form-control bg-white border-secondary-subtle shadow-sm"
                 placeholder="Enter email"
               />
             </div>
 
             <div className="mb-4">
-              <label className="form-label">Address</label>
+              <label className="form-label text-secondary small fw-500">
+                Address
+              </label>
               <input
                 onChange={({ target }) => setUserAddress(target.value)}
                 value={userAddress}
-                className="form-control"
+                className="form-control bg-white border-secondary-subtle shadow-sm"
                 placeholder="Enter address"
               />
             </div>
@@ -114,15 +122,20 @@ export const EditContact = () => {
                     userAddress
                   )
                 }
-                className="btn btn-success"
+                className="btn btn-primary flex-fill shadow-sm"
               >
-                {" "}
-                <Link to="/contacts">Edit contact</Link>
+                <Link
+                  to="/contacts"
+                  className="text-white text-decoration-none"
+                >
+                  Edit contact
+                </Link>
               </button>
 
-              <button className="btn btn-success">
-                {" "}
-                <Link to="/">Or get back to contacts</Link>
+              <button className="btn btn-outline-secondary flex-fill shadow-sm">
+                <Link to="/" className="text-decoration-none">
+                  Back to contacts
+                </Link>
               </button>
             </div>
           </div>
